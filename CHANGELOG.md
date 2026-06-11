@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 — unreleased
+
+- STEP product names preserved in diff output: "~ 'plate' modified" instead
+  of "~ body_0" (XCAF assembly walk with instance locations applied;
+  kernel placeholder names filtered; duplicates suffixed #2, #3...;
+  nameless solids keep the body_N fallback).
+
+
 ## 0.1.1 — 2026-06-11
 
 First PyPI release (Trusted Publishing). Site live at argusdiff.com.

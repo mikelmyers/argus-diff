@@ -105,19 +105,101 @@ def _props_of(solid: cq.Solid, index: int, name: str) -> BodyInfo:
     )
 
 
+def _named_solids_xcaf(path: Path) -> list[tuple[str | None, cq.Solid]]:
+    """Extract (product_name, located_solid) pairs via the STEP XCAF layer.
+
+    STEP files carry product names; the plain importer discards them. Walk
+    the assembly graph applying instance locations so solids land in world
+    coordinates (product shapes themselves are in local frames).
+    """
+    from OCP.IFSelect import IFSelect_RetDone
+    from OCP.STEPCAFControl import STEPCAFControl_Reader
+    from OCP.TCollection import TCollection_ExtendedString
+    from OCP.TDataStd import TDataStd_Name
+    from OCP.TDF import TDF_Label, TDF_LabelSequence
+    from OCP.TDocStd import TDocStd_Document
+    from OCP.TopAbs import TopAbs_SOLID
+    from OCP.TopExp import TopExp_Explorer
+    from OCP.TopLoc import TopLoc_Location
+    from OCP.XCAFDoc import XCAFDoc_DocumentTool
+
+    def name_of(lab):
+        a = TDataStd_Name()
+        if lab.FindAttribute(TDataStd_Name.GetID_s(), a):
+            n = a.Get().ToExtString().strip()
+            # kernel-generated placeholder, not a human part name
+            if n.startswith("Open CASCADE STEP translator"):
+                return None
+            return n or None
+        return None
+
+    doc = TDocStd_Document(TCollection_ExtendedString("argus"))
+    reader = STEPCAFControl_Reader()
+    reader.SetNameMode(True)
+    if reader.ReadFile(str(path)) != IFSelect_RetDone:
+        raise ValueError(f"{path}: STEP read failed")
+    reader.Transfer(doc)
+    st = XCAFDoc_DocumentTool.ShapeTool_s(doc.Main())
+    roots = TDF_LabelSequence()
+    st.GetFreeShapes(roots)
+
+    out: list[tuple[str | None, cq.Solid]] = []
+
+    def walk(lab, loc, inherited):
+        nm = name_of(lab) or inherited
+        if st.IsAssembly_s(lab):
+            comps = TDF_LabelSequence()
+            st.GetComponents_s(lab, comps)
+            for j in range(1, comps.Length() + 1):
+                comp = comps.Value(j)
+                cloc = loc.Multiplied(st.GetLocation_s(comp))
+                ref = TDF_Label()
+                if st.GetReferredShape_s(comp, ref):
+                    walk(ref, cloc, name_of(comp) or nm)
+                else:
+                    walk(comp, cloc, nm)
+        else:
+            shape = st.GetShape_s(lab)
+            if not loc.IsIdentity():
+                shape = shape.Moved(loc)
+            ex = TopExp_Explorer(shape, TopAbs_SOLID)
+            while ex.More():
+                out.append((nm, cq.Solid(ex.Current())))
+                ex.Next()
+
+    for i in range(1, roots.Length() + 1):
+        walk(roots.Value(i), TopLoc_Location(), None)
+    return out
+
+
 def load_step(path: str | Path) -> list[BodyInfo]:
     """Load a STEP file and return per-solid geometric fingerprints.
 
     Assemblies and compounds are flattened to their constituent solids.
+    Product names from the STEP structure are preserved when present
+    ("plate", "boss"), falling back to body_N; duplicates get #2, #3...
     """
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(path)
-    wp = cq.importers.importStep(str(path))
-    solids = wp.solids().vals()
-    if not solids:
+    pairs: list[tuple[str | None, cq.Solid]] = []
+    try:
+        pairs = _named_solids_xcaf(path)
+    except Exception:
+        pairs = []  # XCAF path is an enhancement, never a gate
+    if not pairs:
+        wp = cq.importers.importStep(str(path))
+        pairs = [(None, s) for s in wp.solids().vals()]
+    if not pairs:
         raise ValueError(f"{path}: no solid bodies found in STEP file")
-    return [_props_of(s, i, f"body_{i}") for i, s in enumerate(solids)]
+    seen: dict[str, int] = {}
+    bodies = []
+    for i, (nm, solid) in enumerate(pairs):
+        base = nm or f"body_{i}"
+        seen[base] = seen.get(base, 0) + 1
+        unique = base if seen[base] == 1 else f"{base}#{seen[base]}"
+        bodies.append(_props_of(solid, i, unique))
+    return bodies
 
 
 def _props_of_mesh(m, index: int) -> BodyInfo:

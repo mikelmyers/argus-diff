@@ -12,17 +12,8 @@ module.exports = async (req, res) => {
     res.status(400).json({ error: 'invalid email' });
     return;
   }
+  // log-only: delivery happens browser-side via FormSubmit (server-origin
+  // posts get blocked by their anti-bot layer — learned from the first live test)
   console.log(`[waitlist] ${new Date().toISOString()} ${email}`);
-  try {
-    const r = await fetch(FORWARD, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ _subject: '[argus] waitlist signup', email }),
-    });
-    if (!r.ok) throw new Error(`forward status ${r.status}`);
-    res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error(`[waitlist] forward failed for ${email}: ${err.message}`);
-    res.status(502).json({ error: 'forward failed' });
-  }
+  res.status(200).json({ ok: true });
 };

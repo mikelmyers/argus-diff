@@ -144,10 +144,14 @@
     const honey = form._honey.value;
     if (honey) return;
     try {
-      const r = await fetch('/api/waitlist', {
+      // log-only telemetry; never blocks the signup
+      fetch('/api/waitlist', { method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email}) }).catch(() => {});
+      // delivery: FormSubmit is browser-origin by design
+      const r = await fetch('https://formsubmit.co/ajax/myers092@gmail.com', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email})
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: JSON.stringify({_subject: '[argus] waitlist signup', email})
       });
       if (!r.ok) throw new Error('bad status');
       document.getElementById('ok').style.display = 'block';

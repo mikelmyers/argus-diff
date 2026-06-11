@@ -29,7 +29,8 @@ runs:
     - name: Install argus-diff
       shell: bash
       run: |
-        sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1
+        sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1 libglu1-mesa \
+          libxrender1 libxcursor1 libxft2 libxinerama1 libxfixes3 libfontconfig1
         pip install --quiet "argus-diff[render] @ git+https://github.com/${{ github.action_repository || 'mikelmyers/argus-diff' }}"
 
     - name: Run geometric diff
@@ -44,11 +45,15 @@ runs:
         RECEIPTS=""
         python -c 'import argus_receipts' 2>/dev/null && \
           RECEIPTS="--receipt-ledger argus-renders/receipts.jsonl"
+        argus --version || { echo '::error::argus failed to import — dependency problem above'; pip show argus-diff | head -3; }
         xvfb-run -a argus ci --base "origin/${{ github.base_ref || 'main' }}" \
           --density "${{ inputs.density }}" \
           --render-dir argus-renders --markdown argus-report.md $RECEIPTS $GATES
         echo "ARGUS_EXIT=$?" >> "$GITHUB_ENV"
-        cat argus-report.md >> "$GITHUB_STEP_SUMMARY"
+        # never leave the comment step without a report, even on engine failure
+        [ -f argus-report.md ] || echo '**argus-diff:** the engine failed before producing a report — see the action logs.' > argus-report.md
+        cat argus-report.md >> "$GITHUB_STEP_SUMMARY" || true
+        exit 0
 
     - name: Upload renders
       uses: actions/upload-artifact@v4

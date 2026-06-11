@@ -93,6 +93,11 @@ jobs:
           max-mass-delta-pct: "2"
 ```
 
+## Read more
+
+[What changed in this 70 MB STEP file? Now you can actually know.](docs/posts/what-changed-in-this-70mb-step-file.md) — argus-diff
+run on two real revisions from the Jubilee toolchanger's history.
+
 ## How it works
 
 - STEP is loaded with the open-source OCCT kernel (via

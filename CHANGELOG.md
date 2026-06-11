@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-06-11
+
+First PyPI release (Trusted Publishing). Site live at argusdiff.com.
+README links the site and the live demo PR; landing page reflects the
+shipped GitHub Action. No engine changes.
+
+
 ## 0.1.0 — unreleased (publish = first public tag)
 
 First release. Everything here is validated against real files from real

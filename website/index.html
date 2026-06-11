@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Diff — git diff for atoms</title>
+<meta name="description" content="Geometric diff, review, and CI for mechanical CAD. See what actually changed between two STEP files: bodies added/removed/modified, mass deltas, interference — rendered on the pull request.">
+<style>
+  :root {
+    --bg: #0c0f14; --panel: #131822; --text: #e6e9ee; --muted: #9aa3ad;
+    --accent: #f59e0b; --green: #22c55e; --red: #ef4444; --line: #232b38;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 28px 0; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-weight: 700; letter-spacing: .02em; font-size: 18px; }
+  .logo span { color: var(--accent); }
+  .hero { padding: 56px 0 32px; }
+  h1 { font-size: 42px; line-height: 1.15; letter-spacing: -.01em; max-width: 26ch; }
+  h1 em { color: var(--accent); font-style: normal; }
+  .sub { color: var(--muted); margin: 20px 0 28px; max-width: 62ch; font-size: 18px; }
+  .render { border: 1px solid var(--line); border-radius: 10px; background: #fff; width: 100%; margin: 8px 0 6px; }
+  .caption { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .caption b.r { color: var(--red); } .caption b.g { color: var(--green); } .caption b.a { color: var(--accent); }
+  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; overflow-x: auto; font: 13px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #c9d2de; }
+  pre .add { color: var(--green); } pre .del { color: var(--red); } pre .mod { color: var(--accent); } pre .warn { color: var(--red); font-weight: 600; }
+  section { padding: 36px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 24px; margin-bottom: 16px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 8px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+  .card h3 { font-size: 16px; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 14.5px; }
+  .pill { display: inline-block; font-size: 12px; border: 1px solid var(--line); color: var(--muted); border-radius: 99px; padding: 2px 10px; margin-bottom: 10px; }
+  form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  input[type=email] { flex: 1 1 280px; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 15px; }
+  button { padding: 12px 22px; border-radius: 8px; border: 0; background: var(--accent); color: #14100a; font-weight: 700; font-size: 15px; cursor: pointer; }
+  button:hover { filter: brightness(1.08); }
+  .fine { color: var(--muted); font-size: 13px; margin-top: 10px; }
+  .ok { color: var(--green); font-size: 14.5px; margin-top: 10px; display: none; }
+  .err { color: var(--red); font-size: 14.5px; margin-top: 10px; display: none; }
+  footer { padding: 36px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+  footer a { color: var(--muted); }
+  @media (max-width: 640px) { h1 { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">ARGUS <span>DIFF</span></div>
+    <div style="color:var(--muted);font-size:13px"><a href="https://github.com/mikelmyers/argus-diff" style="color:var(--muted)">GitHub</a> &middot; open-source &middot; alpha</div>
+  </header>
+
+  <div class="hero">
+    <h1><em>git diff</em> for atoms.<br>Geometric review &amp; CI for mechanical CAD.</h1>
+    <p class="sub">
+      When a STEP or STL file changes, a screenshot in Slack is not a review.
+      Argus shows what actually changed — bodies added, removed, modified;
+      mass and volume deltas; bounding envelope; solid interference — as
+      structured data, a rendered visual diff, and pass/fail CI gates.
+      STEP, STL, 3MF, OBJ, PLY.
+    </p>
+    <img class="render" src="assets/bracket_diff.png" alt="Rendered geometric diff of a bracket: before, after, and overlay panes">
+    <p class="caption">Real output: a bracket between two revisions. <b class="g">green</b> = added, <b class="r">red</b> = removed, <b class="a">amber</b> = modified, gray = unchanged. The overlay ghosts the old geometry in place.</p>
+<pre>$ argus diff bracket_rev_a.step bracket_rev_b.step --density 2.70
+
+  + <span class="add">1 added</span>   - <span class="del">1 removed</span>   ~ <span class="mod">2 modified</span>   = 1 unchanged
+
+  volume: 35638.9 -&gt; 48318.3 mm^3 (+35.58%)
+  mass:   96.23 -&gt; 130.46 g @ 2.7 g/cm^3 (+34.23 g)
+  interferences (after): 1
+    ~ <span class="mod">body_0: vol +32.46%, com shift 1.000 mm</span>
+        . <span class="mod">4x cylinder face: radius 2.500 -&gt; 3.000 mm</span>   &larr; the corner holes opened &#8960;5&rarr;&#8960;6
+    ~ <span class="mod">body_1: vol +52.38%, com shift 6.325 mm</span>
+        . <span class="mod">cylinder face: radius 10.000 -&gt; 12.000 mm</span>  &larr; the boss grew &#8960;20&rarr;&#8960;24
+    + <span class="add">body_2: 540.0 mm^3</span>
+    - <span class="del">body_2: 100.5 mm^3</span>
+    <span class="warn">! interference body_1 x body_2: 108.650 mm^3 overlap</span></pre>
+  </div>
+
+  <section>
+    <h2>Why</h2>
+    <p class="sub" style="margin-top:0">
+      AI agents and parametric tools now produce mechanical designs faster than
+      humans can check them. Verification — not generation — is the bottleneck.
+      ECAD got its diff-and-review wave; mechanical CAD, the larger population,
+      still reviews by opening two files side by side and squinting.
+    </p>
+    <div class="cols">
+      <div class="card"><span class="pill">today — open source</span>
+        <h3>CLI: structured STEP diff</h3>
+        <p>Two STEP files in; JSON + terminal summary + rendered before/after/overlay out. Body matching by geometric fingerprint on the open OCCT kernel. MIT licensed.</p></div>
+      <div class="card"><span class="pill">today — open source</span>
+        <h3>CI gates</h3>
+        <p><code>--fail-on-interference</code>, <code>--max-mass-delta-pct</code>. Exit codes a pipeline understands. A mass budget can fail a PR the way a broken test does.</p></div>
+      <div class="card"><span class="pill">next</span>
+        <h3>GitHub Action</h3>
+        <p>The visual diff and the gate results, commented directly on pull requests that touch STEP / 3MF / cadquery / FreeCAD sources.</p></div>
+      <div class="card"><span class="pill">later — paid</span>
+        <h3>Cloud review</h3>
+        <p>Private repos, large assemblies, inline 3D viewer, team seats, history. Free for open source, always.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>It works on real files, not toy demos</h2>
+    <p class="sub" style="margin-top:0">
+      In 2021, the open-source <a href="https://github.com/machineagency/jubilee" style="color:var(--accent)">Jubilee toolchanger</a>
+      project updated a 70&nbsp;MB STEP export with the commit message
+      <em>"updating STEP Files to be in sync with Solidworks files"</em> — the only
+      description the tooling of the day could give. Argus resolves that commit to:
+      58 of 65 bodies untouched, four fasteners shifted exactly 0.385&nbsp;mm, two parts
+      repositioned, one part redesigned (−61% volume), two parts added. In 3 minutes
+       18 seconds, reproducible from a committed script.
+    </p>
+    <img class="render" src="assets/orbiter_diff.png" alt="Rendered geometric diff of the Jubilee Orbiter extruder tool between two real revisions">
+    <p class="caption">Real output on the real files: the Orbiter extruder tool, revision 9c8f1d4^ vs 9c8f1d4. The <b class="a">amber</b> bracket was redesigned and repositioned; <b class="g">green</b> fasteners were added; gray is untouched.</p>
+  </section>
+
+  <section id="waitlist">
+    <h2>Get the GitHub Action first</h2>
+    <p class="sub" style="margin-top:0">The code is live: <a href="https://github.com/mikelmyers/argus-diff" style="color:var(--accent)">github.com/mikelmyers/argus-diff</a> (MIT). Leave an email to get the GitHub Action beta and cloud-tier updates, and nothing else. No spam; one-click out.</p>
+    <form id="wl">
+      <input type="email" name="email" required placeholder="you@hardware.team" aria-label="email">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <button type="submit">Join the waitlist</button>
+    </form>
+    <p class="ok" id="ok">You're on the list. We'll email you when the repo and the Action are live.</p>
+    <p class="err" id="err">That didn't send. Email the operator instead: <a href="mailto:myers092@gmail.com?subject=argus%20waitlist" style="color:var(--accent)">myers092@gmail.com</a></p>
+    <p class="fine">We store your email to send Argus launch updates only. It is never sold or shared. Reply "stop" to any mail to be removed.</p>
+  </section>
+
+  <footer>
+    Argus — the review layer for machine-made things. This page makes no claims
+    the shipped code can't back: the render and the terminal output above are
+    real tool output from the committed example, reproducible from source.
+  </footer>
+</div>
+<script>
+  const form = document.getElementById('wl');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value;
+    const honey = form._honey.value;
+    if (honey) return;
+    try {
+      const r = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email})
+      });
+      if (!r.ok) throw new Error('bad status');
+      document.getElementById('ok').style.display = 'block';
+      document.getElementById('err').style.display = 'none';
+      form.style.display = 'none';
+    } catch {
+      document.getElementById('err').style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>

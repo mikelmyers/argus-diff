@@ -1,0 +1,597 @@
+{
+  "repo": "https://github.com/VoronDesign/Voron-2",
+  "pairs": [
+    {
+      "commit": "cbfe73f3b6",
+      "path": "STLs/Panel_Mounting/z_belt_cover_a_x2.stl",
+      "max_size_mb": 0.68,
+      "seconds": 3.0,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 6475.359316,
+        "volume_after_mm3": 6275.611759,
+        "volume_delta_mm3": -199.747557,
+        "volume_delta_pct": -3.0847,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 6.475359,
+        "mass_after_g": 6.275612,
+        "mass_delta_g": -0.199748,
+        "bbox_before_mm": [
+          [
+            91.47996520996094,
+            83.49983978271484,
+            0.0
+          ],
+          [
+            136.52005004882812,
+            144.50015258789062,
+            6.599998474121094
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            90.0,
+            90.0,
+            38.79600143432617
+          ],
+          [
+            135.04006958007812,
+            151.0003204345703,
+            45.39600372314453
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "cbfe73f3b6",
+      "path": "STLs/Panel_Mounting/z_belt_cover_b_x2.stl",
+      "max_size_mb": 0.68,
+      "seconds": 3.3,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 6475.359752,
+        "volume_after_mm3": 6275.612081,
+        "volume_delta_mm3": -199.747671,
+        "volume_delta_pct": -3.0847,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 6.47536,
+        "mass_after_g": 6.275612,
+        "mass_delta_g": -0.199748,
+        "bbox_before_mm": [
+          [
+            91.47996520996094,
+            83.49984741210938,
+            0.0
+          ],
+          [
+            136.52005004882812,
+            144.50015258789062,
+            6.599998474121094
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            90.0,
+            90.0,
+            38.79600143432617
+          ],
+          [
+            135.04006958007812,
+            151.0003204345703,
+            45.39600372314453
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "ea801bbf72",
+      "path": "STLs/Electronics_Bay/PSU_stabilizer_50mm.stl",
+      "max_size_mb": 0.42,
+      "seconds": 3.0,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 3698.34592,
+        "volume_after_mm3": 3733.168378,
+        "volume_delta_mm3": 34.822457,
+        "volume_delta_pct": 0.9416,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 3.698346,
+        "mass_after_g": 3.733168,
+        "mass_delta_g": 0.034822,
+        "bbox_before_mm": [
+          [
+            98.05000305175781,
+            93.125,
+            8.881784197001252e-16
+          ],
+          [
+            154.9499969482422,
+            136.875,
+            15.0
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            167.95614624023438,
+            110.70928955078125,
+            364.3368225097656
+          ],
+          [
+            224.85617065429688,
+            156.45556640625,
+            379.3368225097656
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "55dbc7cadd",
+      "path": "STLs/Electronics_Bay/Controller_Mounts/Spider_bracket_set.stl",
+      "max_size_mb": 1.8,
+      "seconds": 3.6,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 2,
+        "bodies_after": 2,
+        "added": 0,
+        "removed": 0,
+        "modified": 2,
+        "unchanged": 0,
+        "volume_before_mm3": 6860.479114,
+        "volume_after_mm3": 7143.303907,
+        "volume_delta_mm3": 282.824793,
+        "volume_delta_pct": 4.1225,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 6.860479,
+        "mass_after_g": 7.143304,
+        "mass_delta_g": 0.282825,
+        "bbox_before_mm": [
+          [
+            61.5515022277832,
+            0.28644832968711853,
+            0.0
+          ],
+          [
+            101.65150451660156,
+            76.18455505371094,
+            7.0
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            61.5515022277832,
+            0.2871037423610687,
+            0.0
+          ],
+          [
+            101.65150451660156,
+            76.18389892578125,
+            9.0
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "ad255b3941",
+      "path": "STLs/Gantry/X_Axis/X_Carriage/Printheads/E3D_Revo_Micro/printhead_front_e3d_revo_micro.stl",
+      "max_size_mb": 4.4,
+      "seconds": 5.2,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 7,
+        "bodies_after": 7,
+        "added": 0,
+        "removed": 0,
+        "modified": 7,
+        "unchanged": 0,
+        "volume_before_mm3": 30322.634431,
+        "volume_after_mm3": 30139.570308,
+        "volume_delta_mm3": -183.064123,
+        "volume_delta_pct": -0.6037,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 30.322634,
+        "mass_after_g": 30.13957,
+        "mass_delta_g": -0.183064,
+        "bbox_before_mm": [
+          [
+            -11.12532901763916,
+            -30.29010772705078,
+            0.9500313401222229
+          ],
+          [
+            27.400001525878906,
+            30.29010772705078,
+            59.503597259521484
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            120.72321319580078,
+            119.70989227294922,
+            0.0
+          ],
+          [
+            179.2767791748047,
+            180.29010009765625,
+            38.52532958984375
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "ad255b3941",
+      "path": "STLs/Gantry/X_Axis/X_Carriage/Printheads/E3D_Revo_Micro/printhead_rear_e3d_revo_micro.stl",
+      "max_size_mb": 1.77,
+      "seconds": 3.4,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 6572.471407,
+        "volume_after_mm3": 6810.838559,
+        "volume_delta_mm3": 238.367152,
+        "volume_delta_pct": 3.6268,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 6.572471,
+        "mass_after_g": 6.810839,
+        "mass_delta_g": 0.238367,
+        "bbox_before_mm": [
+          [
+            -14.500000953674316,
+            -20.0,
+            12.799605369567871
+          ],
+          [
+            2.7336836794233932e-08,
+            20.0,
+            63.599998474121094
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            124.59980773925781,
+            130.0,
+            1.7763568394002505e-15
+          ],
+          [
+            175.4001922607422,
+            170.0,
+            14.500000953674316
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "456dc42169",
+      "path": "STLs/Panel_Mounting/Front_Doors/door_hinge_x6.stl",
+      "max_size_mb": 1.0,
+      "seconds": 3.1,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 2,
+        "bodies_after": 2,
+        "added": 0,
+        "removed": 0,
+        "modified": 2,
+        "unchanged": 0,
+        "volume_before_mm3": 4980.460671,
+        "volume_after_mm3": 4984.30127,
+        "volume_delta_mm3": 3.840598,
+        "volume_delta_pct": 0.0771,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 4.980461,
+        "mass_after_g": 4.984301,
+        "mass_delta_g": 0.003841,
+        "bbox_before_mm": [
+          [
+            105.0,
+            91.5,
+            8.881784197001252e-16
+          ],
+          [
+            145.0,
+            118.5,
+            13.0
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            105.0,
+            106.5,
+            8.881784197001252e-16
+          ],
+          [
+            145.0,
+            133.5,
+            13.0
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "456dc42169",
+      "path": "STLs/Panel_Mounting/Front_Doors/latch_x2.stl",
+      "max_size_mb": 0.13,
+      "seconds": 2.7,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 3647.774832,
+        "volume_after_mm3": 3654.317251,
+        "volume_delta_mm3": 6.542418,
+        "volume_delta_pct": 0.1794,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 3.647775,
+        "mass_after_g": 3.654317,
+        "mass_delta_g": 0.006542,
+        "bbox_before_mm": [
+          [
+            114.0,
+            91.07107543945312,
+            0.0
+          ],
+          [
+            124.0,
+            136.92892456054688,
+            13.0
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            120.0,
+            97.07107543945312,
+            0.0
+          ],
+          [
+            130.0,
+            142.92892456054688,
+            13.0
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "456dc42169",
+      "path": "STLs/Panel_Mounting/bottom_panel_clip_x4.stl",
+      "max_size_mb": 0.08,
+      "seconds": 2.8,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 3137.107785,
+        "volume_after_mm3": 3144.048732,
+        "volume_delta_mm3": 6.940948,
+        "volume_delta_pct": 0.2213,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 3.137108,
+        "mass_after_g": 3.144049,
+        "mass_delta_g": 0.006941,
+        "bbox_before_mm": [
+          [
+            2.5000805854797363,
+            -32.71251678466797,
+            -126.09611511230469
+          ],
+          [
+            32.50008010864258,
+            -1.0000847578048706,
+            -120.09611511230469
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            2.5000805854797363,
+            -32.71251678466797,
+            -126.09611511230469
+          ],
+          [
+            32.50008010864258,
+            -1.0000847578048706,
+            -120.09611511230469
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "456dc42169",
+      "path": "STLs/Panel_Mounting/bottom_panel_hinge_x2.stl",
+      "max_size_mb": 0.56,
+      "seconds": 2.9,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 2,
+        "bodies_after": 2,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 1,
+        "volume_before_mm3": 3894.175808,
+        "volume_after_mm3": 3901.123243,
+        "volume_delta_mm3": 6.947435,
+        "volume_delta_pct": 0.1784,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 3.894176,
+        "mass_after_g": 3.901123,
+        "mass_delta_g": 0.006947,
+        "bbox_before_mm": [
+          [
+            -2.4999194145202637,
+            -32.47590255737305,
+            -126.09611511230469
+          ],
+          [
+            37.50008010864258,
+            -1.0000847578048706,
+            -120.09612274169922
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            -2.4999194145202637,
+            -32.47590255737305,
+            -126.09611511230469
+          ],
+          [
+            37.50008010864258,
+            -1.0000847578048706,
+            -120.09612274169922
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "456dc42169",
+      "path": "STLs/Panel_Mounting/corner_panel_clip_4mm_x8.stl",
+      "max_size_mb": 0.36,
+      "seconds": 2.8,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 1,
+        "removed": 1,
+        "modified": 0,
+        "unchanged": 0,
+        "volume_before_mm3": 2731.995217,
+        "volume_after_mm3": 0.0,
+        "volume_delta_mm3": -2731.995217,
+        "volume_delta_pct": -100.0,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 2.731995,
+        "mass_after_g": 0.0,
+        "mass_delta_g": -2.731995,
+        "bbox_before_mm": [
+          [
+            132.5,
+            132.5,
+            -8.881784197001252e-16
+          ],
+          [
+            167.5,
+            167.5,
+            7.0
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            107.5,
+            102.5,
+            -8.881784197001252e-16
+          ],
+          [
+            142.5,
+            137.5,
+            7.0
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "456dc42169",
+      "path": "STLs/Panel_Mounting/corner_panel_clip_6mm_x8.stl",
+      "max_size_mb": 0.41,
+      "seconds": 2.9,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 4070.715129,
+        "volume_after_mm3": 4084.474606,
+        "volume_delta_mm3": 13.759477,
+        "volume_delta_pct": 0.338,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 4.070715,
+        "mass_after_g": 4.084475,
+        "mass_delta_g": 0.013759,
+        "bbox_before_mm": [
+          [
+            132.5,
+            132.5,
+            -8.881784197001252e-16
+          ],
+          [
+            167.5,
+            167.5,
+            10.00029182434082
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            107.5,
+            102.5,
+            -8.881784197001252e-16
+          ],
+          [
+            142.5,
+            137.5,
+            9.999808311462402
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    }
+  ],
+  "summary": {
+    "ok": 12
+  },
+  "modified_step_revisions_found": 310
+}

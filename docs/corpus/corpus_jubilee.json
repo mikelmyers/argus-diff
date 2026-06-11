@@ -1,0 +1,45 @@
+{
+  "repo": "https://github.com/machineagency/jubilee",
+  "pairs": [
+    {
+      "commit": "e79509c0e2",
+      "path": "tools/jubilee_tools/tools/extruders/baby_bullet_extruder/cads/Step/orbiter_tool.STEP",
+      "max_size_mb": 71.26,
+      "status": "skipped_size"
+    },
+    {
+      "commit": "e79509c0e2",
+      "path": "tools/jubilee_tools/tools/extruders/baby_bullet_extruder/cads/Step/thr_orbiter_tool.STEP",
+      "max_size_mb": 73.05,
+      "status": "skipped_size"
+    },
+    {
+      "commit": "ee2858853a",
+      "path": "frame/cads/STEP/jubilee.STEP",
+      "max_size_mb": 45.86,
+      "status": "skipped_size"
+    },
+    {
+      "commit": "9c8f1d408d",
+      "path": "tools/jubilee_tools/tools/extruders/baby_bullet_extruder/cads/Step/orbiter_tool.STEP",
+      "max_size_mb": 77.82,
+      "status": "skipped_size"
+    },
+    {
+      "commit": "9c8f1d408d",
+      "path": "tools/jubilee_tools/tools/extruders/baby_bullet_extruder/cads/Step/thr_orbiter_tool.STEP",
+      "max_size_mb": 79.7,
+      "status": "skipped_size"
+    },
+    {
+      "commit": "890b031dbf",
+      "path": "tools/jubilee_tools/tools/extruders/baby_bullet_extruder/cads/Step/orbiter_tool.STEP",
+      "max_size_mb": 77.82,
+      "status": "skipped_size"
+    }
+  ],
+  "summary": {
+    "skipped_size": 6
+  },
+  "modified_step_revisions_found": 21
+}

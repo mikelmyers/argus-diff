@@ -1,0 +1,5 @@
+# Vercel deploys only the website; the rest of the repo is the Python package.
+*
+!vercel.json
+!website
+!website/**

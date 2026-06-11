@@ -1,0 +1,7 @@
+- id: argus-diff
+  name: argus geometric diff of changed STEP files
+  description: Print what actually changed, geometrically, in staged STEP files.
+  entry: argus precommit
+  language: python
+  files: '(?i)\.(step|stp|stl|3mf|obj|ply)$'
+  verbose: true

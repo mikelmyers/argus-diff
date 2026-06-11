@@ -1,0 +1,81 @@
+name: "Argus Diff"
+description: "Geometric diff for STEP files on pull requests: what changed, rendered, with CI gates."
+branding:
+  icon: "eye"
+  color: "orange"
+
+inputs:
+  density:
+    description: "Material density in g/cm^3 for mass figures"
+    default: "1.0"
+  fail-on-interference:
+    description: "Fail the check if the new revision has overlapping bodies"
+    default: "false"
+  max-mass-delta-pct:
+    description: "Fail the check if |mass delta %| exceeds this (empty = no gate)"
+    default: ""
+  comment:
+    description: "Post the report as a PR comment (needs pull-requests: write)"
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install argus-diff
+      shell: bash
+      run: |
+        sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1
+        pip install --quiet "argus-diff[render] @ git+https://github.com/${{ github.action_repository || 'mikelmyers/argus-diff' }}"
+
+    - name: Run geometric diff
+      shell: bash
+      run: |
+        set +e
+        GATES=""
+        [ "${{ inputs.fail-on-interference }}" = "true" ] && GATES="$GATES --fail-on-interference"
+        [ -n "${{ inputs.max-mass-delta-pct }}" ] && GATES="$GATES --max-mass-delta-pct ${{ inputs.max-mass-delta-pct }}"
+        git fetch --no-tags --depth=1 origin "${{ github.base_ref || 'main' }}"
+        pip install --quiet "argus-receipts @ git+https://github.com/mikelmyers/argus-receipts" || true
+        RECEIPTS=""
+        python -c 'import argus_receipts' 2>/dev/null && \
+          RECEIPTS="--receipt-ledger argus-renders/receipts.jsonl"
+        xvfb-run -a argus ci --base "origin/${{ github.base_ref || 'main' }}" \
+          --density "${{ inputs.density }}" \
+          --render-dir argus-renders --markdown argus-report.md $RECEIPTS $GATES
+        echo "ARGUS_EXIT=$?" >> "$GITHUB_ENV"
+        cat argus-report.md >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload renders
+      uses: actions/upload-artifact@v4
+      if: hashFiles('argus-renders/*') != ''
+      with:
+        name: argus-diff-renders
+        path: argus-renders/
+
+    - name: Comment on PR
+      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          if (!fs.existsSync('argus-report.md')) return;
+          const body = fs.readFileSync('argus-report.md', 'utf8');
+          const marker = '<!-- argus-diff-report -->';
+          const { data: comments } = await github.rest.issues.listComments({
+            ...context.repo, issue_number: context.issue.number });
+          const mine = comments.find(c => c.body.includes(marker));
+          const full = marker + '\n' + body;
+          if (mine) {
+            await github.rest.issues.updateComment({ ...context.repo, comment_id: mine.id, body: full });
+          } else {
+            await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body: full });
+          }
+
+    - name: Enforce gates
+      shell: bash
+      run: exit "${ARGUS_EXIT:-0}"

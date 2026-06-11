@@ -1,0 +1,401 @@
+{
+  "repo": "https://github.com/TheRobotStudio/SO-ARM100",
+  "pairs": [
+    {
+      "commit": "787c515aaf",
+      "path": "STEP/SO101/Seeedstudio_Mounting_Plate_SO101.step",
+      "max_size_mb": 0.05,
+      "seconds": 2.4,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 9313.091367,
+        "volume_after_mm3": 9324.77544,
+        "volume_delta_mm3": 11.684073,
+        "volume_delta_pct": 0.1255,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 9.313091,
+        "mass_after_g": 9.324775,
+        "mass_delta_g": 0.011684,
+        "bbox_before_mm": [
+          [
+            -25.5000001,
+            -21.0000001,
+            -1e-07
+          ],
+          [
+            25.5000001,
+            21.0000001,
+            7.600000100000001
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            -25.5000001,
+            -21.0000001,
+            -1e-07
+          ],
+          [
+            25.5000001,
+            21.0000001,
+            7.600000100000001
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "787c515aaf",
+      "path": "STL/SO101/Individual/Seeedstudio_Mounting_Plate_SO101.stl",
+      "max_size_mb": 0.1,
+      "seconds": 2.8,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 1,
+        "bodies_after": 1,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 0,
+        "volume_before_mm3": 9278.800471,
+        "volume_after_mm3": 9324.712727,
+        "volume_delta_mm3": 45.912256,
+        "volume_delta_pct": 0.4948,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 9.2788,
+        "mass_after_g": 9.324713,
+        "mass_delta_g": 0.045912,
+        "bbox_before_mm": [
+          [
+            -25.5,
+            -21.0,
+            0.0
+          ],
+          [
+            25.5,
+            21.0,
+            7.599999904632568
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            -25.5,
+            -21.0,
+            0.0
+          ],
+          [
+            25.5,
+            21.0,
+            7.599999904632568
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "af84495ba7",
+      "path": "stl_files_for_3dprinting/Leader/Print_Leader_Bambu_P1P.3mf",
+      "max_size_mb": 1.4,
+      "seconds": 72.7,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 71876,
+        "bodies_after": 13,
+        "added": 1,
+        "removed": 71864,
+        "modified": 0,
+        "unchanged": 12,
+        "volume_before_mm3": 597653.22805,
+        "volume_after_mm3": 628112.160925,
+        "volume_delta_mm3": 30458.932876,
+        "volume_delta_pct": 5.0964,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 597.653228,
+        "mass_after_g": 628.112161,
+        "mass_delta_g": 30.458933,
+        "bbox_before_mm": [
+          [
+            21.66229423044077,
+            24.670373427948064,
+            -1.7763568394002505e-14
+          ],
+          [
+            528.161125407191,
+            220.75882767447465,
+            87.0000076
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            21.66229423044077,
+            24.670373427948064,
+            -1.7763568394002505e-14
+          ],
+          [
+            528.161125407191,
+            220.75882767447465,
+            87.0000076
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "0952f994e6",
+      "path": "stl_files_for_3dprinting/Follower/Print_Follower_SO_ARM100_08k_Ender.STL",
+      "max_size_mb": 5.64,
+      "seconds": 4.9,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 12,
+        "bodies_after": 12,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 11,
+        "volume_before_mm3": 584745.998752,
+        "volume_after_mm3": 584746.178711,
+        "volume_delta_mm3": 0.179959,
+        "volume_delta_pct": 0.0,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 584.745999,
+        "mass_after_g": 584.746179,
+        "mass_delta_g": 0.00018,
+        "bbox_before_mm": [
+          [
+            13.4432954788208,
+            23.06943702697754,
+            6.569764614105225
+          ],
+          [
+            231.44329833984375,
+            238.86444091796875,
+            93.56977081298828
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            13.4432954788208,
+            23.06943702697754,
+            6.569764614105225
+          ],
+          [
+            231.44329833984375,
+            238.86444091796875,
+            93.56977081298828
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "0952f994e6",
+      "path": "stl_files_for_3dprinting/Follower/Print_Follower_SO_ARM100_08k_UP_Prusa.STL",
+      "max_size_mb": 5.64,
+      "seconds": 5.0,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 12,
+        "bodies_after": 12,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 11,
+        "volume_before_mm3": 584745.948693,
+        "volume_after_mm3": 584746.142269,
+        "volume_delta_mm3": 0.193576,
+        "volume_delta_pct": 0.0,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 584.745949,
+        "mass_after_g": 584.746142,
+        "mass_delta_g": 0.000194,
+        "bbox_before_mm": [
+          [
+            3.2977828979492188,
+            22.991939544677734,
+            6.569764614105225
+          ],
+          [
+            250.29263305664062,
+            225.491943359375,
+            93.56977081298828
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            3.2977828979492188,
+            22.991939544677734,
+            6.569764614105225
+          ],
+          [
+            250.29263305664062,
+            225.491943359375,
+            93.56977081298828
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "0952f994e6",
+      "path": "stl_files_for_3dprinting/Leader/Print_Leader_SO_ARM100_08k_Ender.STL",
+      "max_size_mb": 5.42,
+      "seconds": 5.0,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 13,
+        "bodies_after": 13,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 12,
+        "volume_before_mm3": 628117.474005,
+        "volume_after_mm3": 628117.583278,
+        "volume_delta_mm3": 0.109273,
+        "volume_delta_pct": 0.0,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 628.117474,
+        "mass_after_g": 628.117583,
+        "mass_delta_g": 0.000109,
+        "bbox_before_mm": [
+          [
+            3.155287742614746,
+            17.955835342407227,
+            0.4664756655693054
+          ],
+          [
+            221.15528869628906,
+            231.32940673828125,
+            88.59074401855469
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            3.155287742614746,
+            17.955835342407227,
+            0.4664756655693054
+          ],
+          [
+            221.15528869628906,
+            231.32940673828125,
+            88.59074401855469
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "0952f994e6",
+      "path": "stl_files_for_3dprinting/Leader/Print_Leader_SO_ARM100_08k_UP_Prusa.STL",
+      "max_size_mb": 5.43,
+      "seconds": 4.9,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 13,
+        "bodies_after": 13,
+        "added": 0,
+        "removed": 0,
+        "modified": 2,
+        "unchanged": 11,
+        "volume_before_mm3": 628117.444994,
+        "volume_after_mm3": 628117.463497,
+        "volume_delta_mm3": 0.018503,
+        "volume_delta_pct": 0.0,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 628.117445,
+        "mass_after_g": 628.117463,
+        "mass_delta_g": 1.9e-05,
+        "bbox_before_mm": [
+          [
+            1.2374988794326782,
+            14.195018768310547,
+            0.4664756655693054
+          ],
+          [
+            248.7375030517578,
+            212.88858032226562,
+            88.59074401855469
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            1.2374988794326782,
+            14.195018768310547,
+            0.4664756655693054
+          ],
+          [
+            248.7375030517578,
+            212.88858032226562,
+            88.59074401855469
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    },
+    {
+      "commit": "01738b1c8f",
+      "path": "stl_files_for_3dprinting/Follower/Print_Follower_SO_ARM100_08k_Ender.STL",
+      "max_size_mb": 5.64,
+      "seconds": 5.2,
+      "status": "ok",
+      "summary": {
+        "bodies_before": 12,
+        "bodies_after": 12,
+        "added": 0,
+        "removed": 0,
+        "modified": 1,
+        "unchanged": 11,
+        "volume_before_mm3": 584776.988696,
+        "volume_after_mm3": 584745.998752,
+        "volume_delta_mm3": -30.989944,
+        "volume_delta_pct": -0.0053,
+        "density_g_cm3": 1.0,
+        "mass_before_g": 584.776989,
+        "mass_after_g": 584.745999,
+        "mass_delta_g": -0.03099,
+        "bbox_before_mm": [
+          [
+            13.4432954788208,
+            23.06943702697754,
+            6.569764614105225
+          ],
+          [
+            231.44329833984375,
+            238.86444091796875,
+            93.56977081298828
+          ]
+        ],
+        "bbox_after_mm": [
+          [
+            13.4432954788208,
+            23.06943702697754,
+            6.569764614105225
+          ],
+          [
+            231.44329833984375,
+            238.86444091796875,
+            93.56977081298828
+          ]
+        ],
+        "interference_checked": false,
+        "interferences_after": 0
+      }
+    }
+  ],
+  "summary": {
+    "ok": 8
+  },
+  "modified_step_revisions_found": 11
+}

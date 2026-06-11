@@ -2,6 +2,9 @@
 
 [![ci](https://github.com/mikelmyers/argus-diff/actions/workflows/ci.yml/badge.svg)](https://github.com/mikelmyers/argus-diff/actions/workflows/ci.yml)
 
+**Site & waitlist:** [argusdiff.com](https://argusdiff.com) ·
+**Live demo:** [the Action commenting a geometric diff on a real PR](https://github.com/mikelmyers/argus-demo/pull/2)
+
 **git diff for atoms.** Geometric diff for mechanical CAD: point it at two
 revisions of a CAD file — STEP, STL, 3MF, OBJ, PLY — and it tells you what
 actually changed — bodies added/removed/modified,

@@ -8,4 +8,5 @@ build/
 !tests/fixtures/*.step
 *.png
 !docs/img/*.png
+!website/assets/*.png
 diff.json

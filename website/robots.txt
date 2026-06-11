@@ -1,1 +1,3 @@
-User-agent: *\nAllow: /\nSitemap: https://argusdiff.com/sitemap.xml\n
+User-agent: *
+Allow: /
+Sitemap: https://argusdiff.com/sitemap.xml

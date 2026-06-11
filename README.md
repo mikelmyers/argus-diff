@@ -20,7 +20,8 @@ broken test does.
 ## Install
 
 ```bash
-# PyPI release is queued; until then install from GitHub:
+pip install "argus-diff[render]"     # from PyPI
+# or the bleeding edge from GitHub:
 pip install "argus-diff[render] @ git+https://github.com/mikelmyers/argus-diff"
 ```
 

@@ -20,6 +20,18 @@
       "dest": "/website/assets/$1"
     },
     {
+      "src": "/sitemap.xml",
+      "dest": "/website/sitemap.xml"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/website/robots.txt"
+    },
+    {
+      "src": "/status",
+      "dest": "/website/status.html"
+    },
+    {
       "src": "/compare-step-files",
       "dest": "/website/compare-step-files.html"
     },

@@ -19,10 +19,17 @@ jobs:
               echo 'clean-room violation: incubator reference found'; exit 1; }
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         python-version: ["3.10", "3.11", "3.12"]
+        include:
+          # the buyer population runs Windows; one lane keeps the install
+          # claim honest there
+          - os: windows-latest
+            python-version: "3.12"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,4 +37,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e ".[dev]"
       - run: ruff check src/ tests/ examples/
-      - run: xvfb-run -a pytest tests/ -v
+      - if: runner.os == 'Linux'
+        run: xvfb-run -a pytest tests/ -v
+      - if: runner.os == 'Windows'
+        # no xvfb on Windows; rendering falls back to off-screen VTK
+        run: pytest tests/ -v

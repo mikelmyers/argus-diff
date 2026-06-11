@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  cleanroom:
+    # argus-diff is clean-room: it must never reference its incubator's
+    # internal projects. Gate enforced from commit one.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: clean-room grep gate
+        run: |
+          ! grep -riE 'primordia|trailblazer' --include='*' -l . \
+            --exclude-dir=.git --exclude-dir=.github || {
+              echo 'clean-room violation: incubator reference found'; exit 1; }
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: ruff check src/ tests/ examples/
+      - run: xvfb-run -a pytest tests/ -v

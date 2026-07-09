@@ -99,6 +99,28 @@ test("rejects a signup without consent", { concurrency: false }, async () => {
   assert.equal(res.code, 400);
 });
 
+test("accepts Resend's duplicate-contact response without sending another email", { concurrency: false }, async () => {
+  const previousKey = process.env.RESEND_API_KEY;
+  const previousFetch = global.fetch;
+  process.env.RESEND_API_KEY = "test-key";
+  let calls = 0;
+  global.fetch = async () => {
+    calls += 1;
+    return { ok: false, status: 422, json: async () => ({ message: "Contact already exists" }) };
+  };
+
+  try {
+    const res = await invoke({ email: "lead@example.com", consent: true, _honey: "" });
+    assert.equal(res.code, 200);
+    assert.deepEqual(res.body, { ok: true });
+    assert.equal(calls, 1);
+  } finally {
+    global.fetch = previousFetch;
+    if (previousKey === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = previousKey;
+  }
+});
+
 test("does not persist honeypot submissions", { concurrency: false }, async () => {
   const previousKey = process.env.RESEND_API_KEY;
   const previousFetch = global.fetch;

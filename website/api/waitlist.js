@@ -64,21 +64,28 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const response = await fetch("https://api.resend.com/contacts", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      unsubscribed: false,
-      properties: {
-        source: "argusdiff.com",
-        consented_at: new Date().toISOString(),
+  let response;
+  try {
+    response = await fetch("https://api.resend.com/contacts", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
       },
-    }),
-  });
+      body: JSON.stringify({
+        email,
+        unsubscribed: false,
+        properties: {
+          source: "argusdiff.com",
+          consented_at: new Date().toISOString(),
+        },
+      }),
+    });
+  } catch {
+    console.error("[waitlist] Resend contact request failed");
+    res.status(502).json({ error: "signup temporarily unavailable" });
+    return;
+  }
 
   // A repeat signup is not an error from the visitor's perspective.
   if (response.ok || response.status === 409) {

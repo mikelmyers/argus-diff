@@ -88,9 +88,17 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // Resend currently reports a duplicate contact as 422 (rather than 409).
+  // Only accept that specific provider response; other 422s remain errors.
+  const responseBody = response.ok ? null : await response.json().catch(() => null);
+  const duplicateContact = response.status === 409 || (
+    response.status === 422 &&
+    typeof responseBody?.message === "string" &&
+    responseBody.message.toLowerCase().includes("already exists")
+  );
   // A repeat signup is not an error from the visitor's perspective. Do not
   // resend the acknowledgement for an existing contact.
-  if (response.status === 409) {
+  if (duplicateContact) {
     res.status(200).json({ ok: true });
     return;
   }

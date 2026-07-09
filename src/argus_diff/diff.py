@@ -6,6 +6,9 @@ import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import numpy as np
+from scipy.optimize import linear_sum_assignment
+
 from OCP.BRepAlgoAPI import BRepAlgoAPI_Common
 from OCP.BRepGProp import BRepGProp
 from OCP.GProp import GProp_GProps
@@ -206,24 +209,55 @@ def _is_unchanged(a: BodyInfo, b: BodyInfo) -> bool:
 
 
 def match_bodies(bodies_a: list[BodyInfo], bodies_b: list[BodyInfo]) -> list[BodyPair]:
-    """Greedy lowest-score-first matching of bodies between two files."""
+    """Globally match bodies, leaving dissimilar bodies as added/removed.
+
+    The previous lowest-score-first strategy could consume the best candidate
+    for one body and force a bad pairing for another. That shows up most
+    often in assemblies with repeated or near-repeated hardware. Solve the
+    full assignment instead, with explicit add/remove choices, so the chosen
+    set of pairs has the lowest total fingerprint distance.
+    """
+    if not bodies_a or not bodies_b:
+        return (
+            [BodyPair(status="removed", a=a, b=None) for a in bodies_a]
+            + [BodyPair(status="added", a=None, b=b) for b in bodies_b]
+        )
+
     scale = 1.0
     for info in bodies_a + bodies_b:
         lo, hi = info.bbox
         scale = max(scale, _dist(lo, hi))
 
-    candidates = sorted(
-        ((match_score(a, b, scale), a, b) for a in bodies_a for b in bodies_b),
-        key=lambda t: t[0],
+    n_a, n_b = len(bodies_a), len(bodies_b)
+    scores = np.array(
+        [[match_score(a, b, scale) for b in bodies_b] for a in bodies_a], dtype=float
     )
+
+    # Add one private dummy column for each A body and one private dummy row
+    # for each B body. Pairing a body costs its score; leaving it unmatched
+    # costs half the cutoff on each side. Therefore a real pair is selected
+    # exactly when it is no worse than an added+removed pair.
+    unmatched_cost = MODIFIED_SCORE_CUTOFF / 2.0 + 1e-9
+    forbidden = MODIFIED_SCORE_CUTOFF * 4.0 + 1.0
+    costs = np.full((n_a + n_b, n_b + n_a), forbidden)
+    costs[:n_a, :n_b] = scores
+    for i in range(n_a):
+        costs[i, n_b + i] = unmatched_cost
+    for j in range(n_b):
+        costs[n_a + j, j] = unmatched_cost
+    costs[n_a:, n_b:] = 0.0
+
+    rows, cols = linear_sum_assignment(costs)
     used_a: set[int] = set()
     used_b: set[int] = set()
     pairs: list[BodyPair] = []
-    for score, a, b in candidates:
-        if a.index in used_a or b.index in used_b:
+    for row, col in zip(rows, cols):
+        if row >= n_a or col >= n_b:
             continue
+        score = float(scores[row, col])
         if score > MODIFIED_SCORE_CUTOFF:
-            break  # remaining candidates are all worse; treat as add/remove
+            continue
+        a, b = bodies_a[row], bodies_b[col]
         used_a.add(a.index)
         used_b.add(b.index)
         status = "unchanged" if _is_unchanged(a, b) else "modified"

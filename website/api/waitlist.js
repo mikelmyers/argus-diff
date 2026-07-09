@@ -65,6 +65,31 @@ module.exports = async (req, res) => {
     return;
   }
 
+  let existing;
+  try {
+    existing = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      },
+    });
+  } catch {
+    console.error("[waitlist] Resend contact lookup failed");
+    res.status(502).json({ error: "signup temporarily unavailable" });
+    return;
+  }
+
+  // A repeat signup is not an error from the visitor's perspective. Do not
+  // resend the acknowledgement (or silently re-subscribe someone who opted out).
+  if (existing.ok) {
+    res.status(200).json({ ok: true });
+    return;
+  }
+  if (existing.status !== 404) {
+    console.error(`[waitlist] Resend contact lookup failed: ${existing.status}`);
+    res.status(502).json({ error: "signup temporarily unavailable" });
+    return;
+  }
+
   let response;
   try {
     response = await fetch("https://api.resend.com/contacts", {
@@ -76,30 +101,11 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         email,
         unsubscribed: false,
-        properties: {
-          source: "argusdiff.com",
-          consented_at: new Date().toISOString(),
-        },
       }),
     });
   } catch {
     console.error("[waitlist] Resend contact request failed");
     res.status(502).json({ error: "signup temporarily unavailable" });
-    return;
-  }
-
-  // Resend currently reports a duplicate contact as 422 (rather than 409).
-  // Only accept that specific provider response; other 422s remain errors.
-  const responseBody = response.ok ? null : await response.json().catch(() => null);
-  const duplicateContact = response.status === 409 || (
-    response.status === 422 &&
-    typeof responseBody?.message === "string" &&
-    responseBody.message.toLowerCase().includes("already exists")
-  );
-  // A repeat signup is not an error from the visitor's perspective. Do not
-  // resend the acknowledgement for an existing contact.
-  if (duplicateContact) {
-    res.status(200).json({ ok: true });
     return;
   }
 

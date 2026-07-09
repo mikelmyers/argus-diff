@@ -37,18 +37,25 @@ test("stores a consented signup server-side", { concurrency: false }, async () =
   const requests = [];
   global.fetch = async (url, options) => {
     requests.push({ url, options });
-    return { ok: true, status: url.endsWith("/contacts") ? 201 : 202 };
+    if (options?.method === "POST" && url.endsWith("/contacts")) return { ok: true, status: 201 };
+    if (options?.method === "POST" && url.endsWith("/emails")) return { ok: true, status: 202 };
+    return { ok: false, status: 404 };
   };
 
   try {
     const res = await invoke({ email: "Lead@Example.com", consent: true, _honey: "" });
     assert.equal(res.code, 200);
     assert.deepEqual(res.body, { ok: true });
-    assert.equal(requests[0].url, "https://api.resend.com/contacts");
-    assert.equal(JSON.parse(requests[0].options.body).email, "lead@example.com");
-    assert.equal(requests[1].url, "https://api.resend.com/emails");
-    assert.equal(JSON.parse(requests[1].options.body).to[0], "lead@example.com");
-    assert.match(JSON.parse(requests[1].options.body).html, /api\/unsubscribe\?email=lead%40example.com/);
+    assert.equal(requests[0].url, "https://api.resend.com/contacts/lead%40example.com");
+    assert.equal(requests[1].url, "https://api.resend.com/contacts");
+    assert.equal(JSON.parse(requests[1].options.body).email, "lead@example.com");
+    assert.deepEqual(JSON.parse(requests[1].options.body), {
+      email: "lead@example.com",
+      unsubscribed: false,
+    });
+    assert.equal(requests[2].url, "https://api.resend.com/emails");
+    assert.equal(JSON.parse(requests[2].options.body).to[0], "lead@example.com");
+    assert.match(JSON.parse(requests[2].options.body).html, /api\/unsubscribe\?email=lead%40example.com/);
   } finally {
     global.fetch = previousFetch;
     if (previousKey === undefined) delete process.env.RESEND_API_KEY;
@@ -99,14 +106,14 @@ test("rejects a signup without consent", { concurrency: false }, async () => {
   assert.equal(res.code, 400);
 });
 
-test("accepts Resend's duplicate-contact response without sending another email", { concurrency: false }, async () => {
+test("accepts an existing contact without sending another email", { concurrency: false }, async () => {
   const previousKey = process.env.RESEND_API_KEY;
   const previousFetch = global.fetch;
   process.env.RESEND_API_KEY = "test-key";
   let calls = 0;
   global.fetch = async () => {
     calls += 1;
-    return { ok: false, status: 422, json: async () => ({ message: "Contact already exists" }) };
+    return { ok: true, status: 200 };
   };
 
   try {

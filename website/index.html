@@ -45,6 +45,7 @@
   button { padding: 12px 22px; border-radius: 8px; border: 0; background: var(--accent); color: #14100a; font-weight: 700; font-size: 15px; cursor: pointer; }
   button:hover { filter: brightness(1.08); }
   .fine { color: var(--muted); font-size: 13px; margin-top: 10px; }
+  .consent { flex: 1 0 100%; color: var(--muted); font-size: 13px; }
   .ok { color: var(--green); font-size: 14.5px; margin-top: 10px; display: none; }
   .err { color: var(--red); font-size: 14.5px; margin-top: 10px; display: none; }
   footer { padding: 36px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
@@ -140,17 +141,16 @@
 
   <section id="waitlist">
     <h2>Stay in the loop</h2>
-    <p class="sub" style="margin-top:0">The code is live: <a href="https://github.com/mikelmyers/argus-diff" style="color:var(--accent)">github.com/mikelmyers/argus-diff</a> (MIT). The GitHub Action is live too. Leave an email for cloud-tier updates and launch news, and nothing else. No spam; one-click out.</p>
+    <p class="sub" style="margin-top:0">The code is live: <a href="https://github.com/mikelmyers/argus-diff" style="color:var(--accent)">github.com/mikelmyers/argus-diff</a> (MIT), and the GitHub Action is live too. Leave an email for early-access and cloud-tier updates.</p>
     <form id="wl">
       <input type="email" name="email" required placeholder="you@hardware.team" aria-label="email">
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-      <button type="submit">Join the waitlist</button>
+      <label class="consent"><input type="checkbox" name="consent" required> I agree to receive Argus updates. I can request deletion or unsubscribe at any time.</label>
+      <button type="submit">Join the early-access list</button>
     </form>
-    <p class="ok" id="ok">You're on the list. We'll email you Argus launch updates only.</p>
-    <p class="err" id="err">That didn't send. Email the operator instead: <a href="mailto:myers092@gmail.com?subject=argus%20waitlist" style="color:var(--accent)">myers092@gmail.com</a></p>
-    <p class="fine">Your email is sent to FormSubmit to deliver this signup to
-    the Argus operator. It is used only for Argus launch updates, never sold,
-    and you can reply "stop" to any mail to be removed.</p>
+    <p class="ok" id="ok" aria-live="polite">You're on the list. We'll email Argus updates only.</p>
+    <p class="err" id="err" aria-live="polite">That didn't send. Email the operator instead: <a href="mailto:myers092@gmail.com?subject=Argus%20early%20access" style="color:var(--accent)">myers092@gmail.com</a></p>
+    <p class="fine">Your email is stored securely with Resend to manage Argus early access. It is never sold. For a public CAD revision pair, use the <a href="https://github.com/mikelmyers/argus-diff/issues/9" style="color:var(--accent)">design-partner intake</a>.</p>
   </section>
 
   <footer>
@@ -166,13 +166,12 @@
     e.preventDefault();
     const email = form.email.value;
     const honey = form._honey.value;
-    if (honey) return;
+    const consent = form.consent.checked;
     try {
-      // delivery: FormSubmit is browser-origin by design
-      const r = await fetch('https://formsubmit.co/ajax/myers092@gmail.com', {
+      const r = await fetch('/api/waitlist', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        body: JSON.stringify({_subject: '[argus] waitlist signup', email})
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, consent, _honey: honey})
       });
       if (!r.ok) throw new Error('bad status');
       document.getElementById('ok').style.display = 'block';

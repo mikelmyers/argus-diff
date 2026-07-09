@@ -37,6 +37,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e ".[dev]"
       - run: ruff check src/ tests/ examples/
+      - run: node --test tests/test_waitlist.cjs
       - if: runner.os == 'Linux'
         run: xvfb-run -a pytest tests/ -v
       - if: runner.os == 'Windows'

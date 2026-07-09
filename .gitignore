@@ -10,3 +10,5 @@ build/
 !docs/img/*.png
 !website/assets/*.png
 diff.json
+.vercel
+.env*

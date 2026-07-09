@@ -11,6 +11,24 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "examples"))
 from make_examples import main as make_examples  # noqa: E402
 
 from argus_diff import diff_files, load_step  # noqa: E402
+from argus_diff.diff import match_bodies  # noqa: E402
+from argus_diff.loader import BodyInfo  # noqa: E402
+
+
+def _body(index: int) -> BodyInfo:
+    """Minimal fingerprint used to exercise assignment behavior."""
+    return BodyInfo(
+        index=index,
+        name=f"body_{index}",
+        volume=1.0,
+        area=1.0,
+        com=(0.0, 0.0, 0.0),
+        bbox=((0.0, 0.0, 0.0), (1.0, 1.0, 1.0)),
+        principal_moments=(1.0, 1.0, 1.0),
+        n_faces=1,
+        n_edges=1,
+        solid=None,
+    )
 
 
 @pytest.fixture(scope="session")
@@ -43,6 +61,25 @@ def test_revision_diff_classification(example_pair):
     assert len(result.unchanged) == 1  # dowel
     # plate got thicker and boss got bigger: net volume must increase
     assert result.volume_b > result.volume_a
+
+
+def test_body_matching_is_globally_optimal_not_greedy(monkeypatch):
+    """A local best pair must not force a much worse pairing downstream."""
+    a, b = [_body(i) for i in range(2)], [_body(i) for i in range(2)]
+    scores = {
+        (0, 0): 0.10,  # greedy would take this first
+        (0, 1): 0.20,
+        (1, 0): 0.15,
+        (1, 1): 1.40,  # then greedy is forced into this poor match
+    }
+
+    monkeypatch.setattr(
+        "argus_diff.diff.match_score", lambda before, after, scale: scores[(before.index, after.index)]
+    )
+    monkeypatch.setattr("argus_diff.diff._is_unchanged", lambda before, after: False)
+
+    pairs = match_bodies(a, b)
+    assert {(p.a.index, p.b.index) for p in pairs} == {(0, 1), (1, 0)}
 
 
 def test_face_level_localization(example_pair):

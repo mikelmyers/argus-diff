@@ -110,7 +110,7 @@ run on two real revisions from the Jubilee toolchanger's history.
 - Each body gets a geometric fingerprint: volume, surface area, center of
   mass, bounding box, volume-normalized principal moments of inertia, face and
   edge counts.
-- Bodies are matched between revisions greedily by fingerprint distance;
+- Bodies are globally matched between revisions by fingerprint distance;
   matched-but-different = **modified**, unmatched = **added**/**removed**.
 - Interference = pairwise boolean-common volume between solids in the new
   revision (bbox-prefiltered).
@@ -119,6 +119,23 @@ run on two real revisions from the Jubilee toolchanger's history.
 
 Every number in this README is reproducible: `python examples/make_examples.py`
 generates the part pair, the command above generates the output.
+
+## Trust benchmark
+
+Compatibility is not accuracy. The versioned [trust benchmark](docs/benchmark/)
+scores the complete body correspondence and classification against human-reviewed
+ground truth, with source provenance and evidence tier recorded per case. The
+current calibration fixture prevents known regressions; it deliberately makes no
+public accuracy claim until externally sourced, independently reviewed labeled
+cases are added.
+
+```bash
+python tools/score_benchmark.py
+```
+
+Have a real revision pair to test? See the [design-partner program](docs/DESIGN_PARTNERS.md)
+or open a **Benchmark case / design partner** issue. Do not attach proprietary
+geometry to a public issue.
 
 ## Scope (honest)
 

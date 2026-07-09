@@ -1,5 +1,10 @@
 # Changelog
 
+- Matching: use a global minimum-cost body assignment rather than greedy
+  lowest-score-first matching. Repeated and near-repeated assembly components
+  now receive the best overall correspondence instead of a locally convenient
+  but misleading diff.
+
 ## 0.1.2 — unreleased
 
 - STEP product names preserved in diff output: "~ 'plate' modified" instead

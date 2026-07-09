@@ -148,7 +148,9 @@
     </form>
     <p class="ok" id="ok">You're on the list. We'll email you Argus launch updates only.</p>
     <p class="err" id="err">That didn't send. Email the operator instead: <a href="mailto:myers092@gmail.com?subject=argus%20waitlist" style="color:var(--accent)">myers092@gmail.com</a></p>
-    <p class="fine">We store your email to send Argus launch updates only. It is never sold or shared. Reply "stop" to any mail to be removed.</p>
+    <p class="fine">Your email is sent to FormSubmit to deliver this signup to
+    the Argus operator. It is used only for Argus launch updates, never sold,
+    and you can reply "stop" to any mail to be removed.</p>
   </section>
 
   <footer>
@@ -166,9 +168,6 @@
     const honey = form._honey.value;
     if (honey) return;
     try {
-      // log-only telemetry; never blocks the signup
-      fetch('/api/waitlist', { method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email}) }).catch(() => {});
       // delivery: FormSubmit is browser-origin by design
       const r = await fetch('https://formsubmit.co/ajax/myers092@gmail.com', {
         method: 'POST',

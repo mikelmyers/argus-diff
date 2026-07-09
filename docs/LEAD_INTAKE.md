@@ -31,3 +31,8 @@ Resend is the email processor for the opt-in list; it is not a browser-side
 relay. Do not send a marketing broadcast until the Resend sending domain is
 verified and the message includes a tested unsubscribe path. Honor deletion or
 unsubscribe requests immediately.
+
+On a first signup, Argus sends one acknowledgement from `updates@argusdiff.com`.
+It includes a signed unsubscribe link that marks the Resend contact globally
+unsubscribed. `UNSUBSCRIBE_SECRET` is a Vercel-only secret used to sign these
+links; it is separate from the Resend API key.

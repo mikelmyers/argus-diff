@@ -4,17 +4,9 @@
     {
       "src": "website/**",
       "use": "@vercel/static"
-    },
-    {
-      "src": "website/api/waitlist.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/api/waitlist",
-      "dest": "/website/api/waitlist.js"
-    },
     {
       "src": "/assets/(.*)",
       "dest": "/website/assets/$1"

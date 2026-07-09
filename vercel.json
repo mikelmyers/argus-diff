@@ -8,12 +8,20 @@
     {
       "src": "website/api/waitlist.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "website/api/unsubscribe.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/waitlist",
       "dest": "/website/api/waitlist.js"
+    },
+    {
+      "src": "/api/unsubscribe",
+      "dest": "/website/api/unsubscribe.js"
     },
     {
       "src": "/assets/(.*)",

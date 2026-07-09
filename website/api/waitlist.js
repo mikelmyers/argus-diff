@@ -2,6 +2,7 @@
 // Resend; the browser never receives the API key or posts to Resend directly.
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const { unsubscribeUrl } = require("./lib/subscription");
 const ALLOWED_HOSTS = new Set([
   "argusdiff.com",
   "argusdiff.dev",
@@ -87,12 +88,51 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // A repeat signup is not an error from the visitor's perspective.
-  if (response.ok || response.status === 409) {
+  // A repeat signup is not an error from the visitor's perspective. Do not
+  // resend the acknowledgement for an existing contact.
+  if (response.status === 409) {
     res.status(200).json({ ok: true });
     return;
   }
 
-  console.error(`[waitlist] Resend contact create failed: ${response.status}`);
-  res.status(502).json({ error: "signup temporarily unavailable" });
+  if (!response.ok) {
+    console.error(`[waitlist] Resend contact create failed: ${response.status}`);
+    res.status(502).json({ error: "signup temporarily unavailable" });
+    return;
+  }
+
+  if (!process.env.UNSUBSCRIBE_SECRET) {
+    console.error("[waitlist] UNSUBSCRIBE_SECRET is not configured");
+    res.status(503).json({ error: "signup temporarily unavailable" });
+    return;
+  }
+
+  const stopUrl = unsubscribeUrl(email, process.env.UNSUBSCRIBE_SECRET);
+  try {
+    const acknowledgement = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+        "Idempotency-Key": `argus-early-access-${email}`,
+      },
+      body: JSON.stringify({
+        from: "Argus Diff <updates@argusdiff.com>",
+        to: [email],
+        reply_to: "myers092@gmail.com",
+        subject: "You’re on the Argus early-access list",
+        html: `<p>Thanks for your interest in Argus Diff.</p><p>We’ll send occasional, practical updates about CAD review and the cloud tier. The open-source CLI and GitHub Action are available now.</p><p><a href="${stopUrl}">Unsubscribe from Argus updates</a></p>`,
+        text: `Thanks for your interest in Argus Diff. We’ll send occasional, practical updates about CAD review and the cloud tier. Unsubscribe: ${stopUrl}`,
+      }),
+    });
+    if (!acknowledgement.ok) {
+      console.error(`[waitlist] Resend acknowledgement failed: ${acknowledgement.status}`);
+    }
+  } catch {
+    // The signup is already durable. A transient acknowledgement failure must
+    // not make the visitor retry and create a confusing experience.
+    console.error("[waitlist] Resend acknowledgement request failed");
+  }
+
+  res.status(200).json({ ok: true });
 };

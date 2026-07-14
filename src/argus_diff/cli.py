@@ -28,7 +28,11 @@ def _fmt_summary(result: DiffResult, density: float) -> str:
         f"({s['volume_delta_pct']:+.2f}%)",
         f"  mass:   {s['mass_before_g']:.2f} -> {s['mass_after_g']:.2f} g "
         f"@ {density} g/cm^3 ({s['mass_delta_g']:+.2f} g)",
-        f"  interferences (after): {s['interferences_after']}",
+        (
+            f"  interferences (after): {s['interferences_after']}"
+            if s["interference_checked"]
+            else "  interferences (after): skipped"
+        ),
     ]
     for p in result.modified:
         pd = p.to_dict()

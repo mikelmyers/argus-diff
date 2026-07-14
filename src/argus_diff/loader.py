@@ -75,7 +75,11 @@ def _props_of(solid: cq.Solid, index: int, name: str) -> BodyInfo:
 
     vp = GProp_GProps()
     BRepGProp.VolumeProperties_s(shape, vp)
-    volume = vp.Mass()
+    # OCCT's volume integral is signed by shell orientation. Some valid STEP
+    # exporters emit inward-oriented solids, but orientation is not negative
+    # physical material: expose a positive volume to matching and reporting.
+    signed_volume = vp.Mass()
+    volume = abs(signed_volume)
     com = vp.CentreOfMass()
 
     sp = GProp_GProps()
@@ -88,8 +92,10 @@ def _props_of(solid: cq.Solid, index: int, name: str) -> BodyInfo:
 
     moments = vp.PrincipalProperties().Moments()
     # Normalize by volume so the fingerprint is scale-honest but unit-stable.
-    norm = abs(volume) if abs(volume) > 1e-12 else 1.0
-    pm = tuple(sorted(m / norm for m in moments))
+    norm = volume if volume > 1e-12 else 1.0
+    # The inertia tensor carries the same integration sign as volume. Normalize
+    # its principal values to the orientation-independent physical magnitudes.
+    pm = tuple(sorted(abs(m) / norm for m in moments))
 
     return BodyInfo(
         index=index,

@@ -18,6 +18,21 @@ COLORS = {
 }
 
 
+def _fit_views(pl) -> None:
+    """Fit each pane to its own contents.
+
+    Revisions can change assembly coordinate systems. Linking the three cameras
+    clips or shrinks one revision in that case; the overlay still provides the
+    shared-coordinate view where displacement is meaningful.
+    """
+    for pane in range(3):
+        pl.subplot(0, pane)
+        pl.camera_position = "iso"
+        # Drop below the iso horizon so underside features stay visible.
+        pl.camera.elevation = -25
+        pl.reset_camera()
+
+
 def _mesh(info: BodyInfo, tol: float = 0.2):
     import pyvista as pv
 
@@ -69,11 +84,8 @@ def render_diff(result: DiffResult, out_path: str | Path, size: tuple[int, int] 
         pl.subplot(0, pane)
         pl.add_text(title, font_size=11, color="black")
         pl.set_background("white")
-        pl.camera_position = "iso"
-        # drop below the iso horizon so underside features stay visible
-        pl.camera.elevation = -25
 
-    pl.link_views()
+    _fit_views(pl)
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     pl.screenshot(str(out_path))

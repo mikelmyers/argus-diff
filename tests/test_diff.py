@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "examples"))
 from make_examples import main as make_examples  # noqa: E402
 
 from argus_diff import diff_files, load_step  # noqa: E402
+from argus_diff.cli import _fmt_summary  # noqa: E402
 from argus_diff.diff import match_bodies  # noqa: E402
 from argus_diff.loader import BodyInfo  # noqa: E402
 
@@ -50,6 +51,16 @@ def test_identical_files_diff_clean(example_pair):
     result = diff_files(a, a, check_interference=False)
     assert len(result.unchanged) == 4
     assert not result.added and not result.removed and not result.modified
+
+
+def test_summary_does_not_report_zero_when_interference_was_skipped(example_pair):
+    a, _ = example_pair
+    result = diff_files(a, a, check_interference=False)
+
+    summary = _fmt_summary(result, density=1.0)
+
+    assert "interferences (after): skipped" in summary
+    assert "interferences (after): 0" not in summary
 
 
 def test_revision_diff_classification(example_pair):
